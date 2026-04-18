@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flower Studio Pro - Upload Edition</title>
+    <title>Flower of dream - make your dream /title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;700&display=swap" rel="stylesheet">
@@ -29,8 +29,8 @@
         <div class="lg:col-span-3 space-y-4 order-2 lg:order-1">
             <div class="bg-white rounded-[2rem] shadow-sm border border-pink-100 overflow-hidden">
                 <div class="flex border-b text-[10px] font-bold">
-                    <button onclick="showTab('flower')" id="btn-flower" class="flex-1 py-4 active-tab text-pink-500">ดอกไม้/ตกแต่ง</button>
-                    <button onclick="showTab('wrap')" id="btn-wrap" class="flex-1 py-4 text-gray-400">ช่อ/แจกัน</button>
+                    <button onclick="showTab('flower')" id="btn-flower" class="flex-1 py-4 active-tab text-pink-500">ดอกไม้/ของตกแต่ง</button>
+                    <button onclick="showTab('wrap')" id="btn-wrap" class="flex-1 py-4 text-gray-400">กระดาษห่อ/แจกัน</button>
                     <button onclick="showTab('bg')" id="btn-bg" class="flex-1 py-4 text-gray-400">พื้นหลัง</button>
                 </div>
 
@@ -248,7 +248,7 @@
         img.set({ left: 50, top: 50, layerName: name });
         canvas.add(img);
         canvas.setActiveObject(img);
-        canvas.renderAll(); // <--- บรรทัดนี้สำคัญมาก ต้องมีเพื่อให้รูปปรากฏทันที
+        canvas.renderAll();
     }, { crossOrigin: 'anonymous' });
 }
 
