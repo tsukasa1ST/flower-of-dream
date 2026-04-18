@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flower Studio Pro - Upload Edition</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Mali', cursive; background-color: #fffafb; height: 100vh; overflow-x: hidden; }
+        .active-tab { border-bottom: 4px solid #ec4899; color: #ec4899; }
+        canvas { touch-action: none; border-radius: 2rem; box-shadow: 0 20px 50px rgba(236, 72, 153, 0.15); }
+        .menu-scroll { height: 380px; overflow-y: auto; padding-right: 5px; }
+        .menu-scroll::-webkit-scrollbar { width: 4px; }
+        .menu-scroll::-webkit-scrollbar-thumb { background: #fce7f3; border-radius: 10px; }
+        .layer-item { background: white; border-radius: 12px; margin-bottom: 8px; border: 1px solid #fce7f3; padding: 10px; transition: 0.2s; cursor: pointer; }
+        .layer-item.active { border-color: #ec4899; background: #fff0f6; transform: scale(1.01); }
+        .scoring-bar { -webkit-appearance: none; width: 100%; height: 6px; background: #ffe4e6; border-radius: 5px; outline: none; }
+        .scoring-bar::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; background: #ec4899; border-radius: 50%; cursor: pointer; }
+        .mini-btn { width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; background: #f8f9fa; border-radius: 6px; font-size: 10px; color: #ec4899; border: 1px solid #eee; }
+        .asset-btn { background: white; border: 1px solid #fce7f3; border-radius: 12px; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; transition: 0.2s; overflow: hidden; }
+        .asset-btn img { max-width: 80%; max-height: 80%; object-fit: contain; }
+    </style>
+</head>
+<body class="p-2 md:p-6">
+
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-3 space-y-4 order-2 lg:order-1">
+            <div class="bg-white rounded-[2rem] shadow-sm border border-pink-100 overflow-hidden">
+                <div class="flex border-b text-[10px] font-bold">
+                    <button onclick="showTab('flower')" id="btn-flower" class="flex-1 py-4 active-tab text-pink-500">ดอกไม้/ตกแต่ง</button>
+                    <button onclick="showTab('wrap')" id="btn-wrap" class="flex-1 py-4 text-gray-400">ช่อ/แจกัน</button>
+                    <button onclick="showTab('bg')" id="btn-bg" class="flex-1 py-4 text-gray-400">พื้นหลัง</button>
+                </div>
+
+                <div class="p-4 menu-scroll">
+                    <div id="tab-flower" class="space-y-4">
+                        <input type="file" id="fileInput" class="hidden" accept="image/*" onchange="handleFileUpload(event)">
+                        <button onclick="document.getElementById('fileInput').click()" class="w-full py-3 mb-2 border-2 border-dashed border-pink-200 rounded-2xl text-pink-400 text-[10px] font-bold hover:bg-pink-50 transition">
+                            + อัปโหลดรูปของคุณ (.png, .jpg)
+                        </button>
+
+                        <div class="grid grid-cols-3 gap-2">
+                           <button onclick="addImg('dok2.png', 'Lily')" class="asset-btn">
+                                <img src="dok2.png">
+                            </button>
+
+                            <button onclick="addImg('dok1.png', 'Rose')" class="asset-btn">
+                                <img src="dok1.png">
+                            </button>
+
+                            <button onclick="addImg('dok3.png', 'Lily')" class="asset-btn">
+                                <img src="dok3.png">
+                            </button>
+                            <button onclick="addImg('dok4.png', 'Lily')" class="asset-btn">
+                                <img src="dok4.png">
+                            </button>
+
+                            <button onclick="addImg('dok5.png', 'Lily')" class="asset-btn">
+                                <img src="dok5.png">
+                            </button>
+
+                            <button onclick="addImg('dok6.png', 'Lily')" class="asset-btn">
+                                <img src="dok6.png">
+                            </button>
+
+                            <button onclick="addImg('dok7.png', 'Lily')" class="asset-btn">
+                                <img src="dok7.png">
+                            </button>
+
+                           <button onclick="addImg('tok1.png', 'Lily')" class="asset-btn">
+                                <img src="tok1.png">
+                            </button>
+
+                            <button onclick="addImg('tok2.png', 'Lily')" class="asset-btn">
+                                <img src="tok2.png">
+                            </button>
+
+                            <button onclick="addImg('tok3.png', 'Lily')" class="asset-btn">
+                                <img src="tok3.png">
+                            </button>
+
+                            <button onclick="addImg('tok4.png', 'Lily')" class="asset-btn">
+                                <img src="tok4.png">
+                            </button>
+
+                            <button onclick="addImg('tok5.png', 'Lily')" class="asset-btn">
+                                <img src="tok5.png">
+                            </button>
+
+                            <button onclick="addImg('tok6.png', 'Lily')" class="asset-btn">
+                                <img src="tok6.png">
+                            </button>
+
+                            <button onclick="addImg('tok7.png', 'Lily')" class="asset-btn">
+                                <img src="tok7.png">
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="tab-wrap" class="hidden space-y-4">
+                        <div class="grid grid-cols-2 gap-3">
+                           <button onclick="addImg('body3.png', 'Lily')" class="asset-btn">
+                                <img src="body3.png">
+                            </button>
+
+                            <button onclick="addImg('body2.png', 'Lily')" class="asset-btn">
+                                <img src="body2.png">
+                            </button>
+
+                            <button onclick="addImg('body1.png', 'Lily')" class="asset-btn">
+                                <img src="body1.png">
+                            </button>
+
+                           <button onclick="addImg('body4.png', 'Lily')" class="asset-btn">
+                                <img src="body4.png">
+                            </button>
+
+                            <button onclick="addImg('jakan.png', 'Lily')" class="asset-btn">
+                                <img src="jakan.png">
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="tab-bg" class="hidden space-y-4">
+                        <input type="color" oninput="changeBg(this.value)" value="#fffafb" class="w-full h-12 rounded-lg cursor-pointer">
+                        <select id="size" onchange="resizeCanvas()" class="w-full p-2 border border-pink-100 rounded-lg text-xs outline-none">
+                            <option value="9:16">แนวตั้ง (9:16)</option>
+                            <option value="4:3">มาตรฐาน (4:3)</option>
+                            <option value="16:9">แนวนอน (16:9)</option>
+                            <option value="10:7">สัดส่วน 10:7</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-[2rem] border border-pink-100">
+                <input type="text" id="tInput" placeholder="ใส่ข้อความ..." class="w-full p-2 border border-pink-50 rounded-lg text-xs mb-3 outline-none">
+                <div class="flex items-center justify-between mb-3 px-1">
+                    <span class="text-[10px] text-gray-400 font-bold uppercase">Color:</span>
+                    <input type="color" id="tColor" oninput="updateTColor(this.value)" value="#ec4899" class="w-10 h-6 cursor-pointer">
+                </div>
+                <button onclick="addText()" class="w-full py-2 bg-pink-400 text-white rounded-xl text-xs font-bold">เพิ่มข้อความ</button>
+            </div>
+        </div>
+
+        <div class="lg:col-span-6 flex flex-col items-center order-1 lg:order-2">
+            <canvas id="c"></canvas>
+            <button onclick="download()" class="mt-6 px-12 py-3 bg-pink-500 text-white rounded-full font-bold shadow-lg active:scale-95 transition">SAVE IMAGE ✨</button>
+        </div>
+
+        <div class="lg:col-span-3 order-3">
+            <div class="bg-white p-5 rounded-[2rem] border border-pink-100 flex flex-col min-h-[500px]">
+                <h3 class="font-bold text-pink-600 mb-4 text-[10px] tracking-widest uppercase text-center border-b pb-2">Layers Control</h3>
+                <div id="layerList" class="flex-1 overflow-y-auto space-y-2 pr-1"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = new fabric.Canvas('c', { width: 280, height: 500, backgroundColor: '#fffafb' });
+
+        canvas.on({
+            'object:added': updateLayerUI,
+            'object:removed': updateLayerUI,
+            'selection:created': updateLayerUI,
+            'selection:cleared': updateLayerUI
+        });
+
+        function updateOpacity(idx, val) {
+            const obj = canvas.item(idx);
+            if (obj) { obj.set('opacity', parseFloat(val)); canvas.renderAll(); document.getElementById(`op-val-${idx}`).innerText = Math.round(val * 100) + '%'; }
+        }
+
+        function updateLayerUI() {
+            const list = document.getElementById('layerList');
+            const objects = canvas.getObjects().slice().reverse();
+            if (objects.length === 0) { list.innerHTML = '<p class="text-center text-gray-300 text-[10px] mt-10 italic">ยังไม่มีชิ้นส่วน</p>'; return; }
+            
+            list.innerHTML = objects.map((obj, i) => {
+                const isSelected = canvas.getActiveObject() === obj;
+                const realIdx = objects.length - 1 - i;
+                const icon = obj.type === 'image' ? '🖼️' : '📝';
+                return `
+                    <div class="layer-item ${isSelected ? 'active' : ''}" onclick="selectItem(${realIdx})">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center gap-2 overflow-hidden">
+                                <span class="text-lg flex-shrink-0">${icon}</span>
+                                <span class="text-[9px] font-bold text-gray-400 truncate">${obj.layerName || 'Item'}</span>
+                            </div>
+                            <div class="flex gap-1">
+                                <button onclick="event.stopPropagation(); changeOrder(${realIdx}, 'up')" class="mini-btn">↑</button>
+                                <button onclick="event.stopPropagation(); changeOrder(${realIdx}, 'down')" class="mini-btn">↓</button>
+                                <button onclick="event.stopPropagation(); deleteItem(${realIdx})" class="mini-btn text-red-300">✕</button>
+                            </div>
+                        </div>
+                        <input type="range" class="scoring-bar" min="0" max="1" step="0.01" value="${obj.opacity}" oninput="updateOpacity(${realIdx}, this.value)">
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function selectItem(idx) { canvas.setActiveObject(canvas.item(idx)); canvas.renderAll(); }
+        function changeOrder(idx, dir) {
+            const obj = canvas.item(idx);
+            if (!obj) return;
+            dir === 'up' ? canvas.bringForward(obj) : canvas.sendBackwards(obj);
+            canvas.renderAll(); updateLayerUI();
+        }
+        function deleteItem(idx) { canvas.remove(canvas.item(idx)); }
+
+        // ฟังก์ชันจัดการอัปโหลดรูปภาพ (เพิ่มใหม่!)
+        function handleFileUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(f) {
+                const data = f.target.result;
+                fabric.Image.fromURL(data, function(img) {
+                    img.scaleToWidth(150);
+                    img.set({ left: 50, top: 100, layerName: "My Image" });
+                    canvas.add(img);
+                    canvas.setActiveObject(img);
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+
+       function addImg(url, name) {
+    fabric.Image.fromURL(url, function(img) {
+        if (!img) return;
+        img.scaleToWidth(150);
+        img.set({ left: 50, top: 50, layerName: name });
+        canvas.add(img);
+        canvas.setActiveObject(img);
+        canvas.renderAll(); // <--- บรรทัดนี้สำคัญมาก ต้องมีเพื่อให้รูปปรากฏทันที
+    }, { crossOrigin: 'anonymous' });
+}
+
+        function addEmoji(emoji, name) {
+            const t = new fabric.Text(emoji, { fontSize: 60, left: 100, top: 100, layerName: name });
+            canvas.add(t);
+            canvas.setActiveObject(t);
+        }
+
+        function addText() {
+            const val = document.getElementById('tInput').value;
+            const color = document.getElementById('tColor').value;
+            if(!val) return;
+            const t = new fabric.Text(val, { left: 50, top: 200, fontSize: 30, fill: color, fontFamily: 'Mali', layerName: val });
+            canvas.add(t);
+            canvas.setActiveObject(t);
+            document.getElementById('tInput').value = '';
+        }
+
+        function updateTColor(c) {
+            const activeObj = canvas.getActiveObject();
+            if (activeObj && activeObj.type === 'text') {
+                activeObj.set('fill', c);
+                canvas.renderAll();
+            }
+        }
+
+        function showTab(t) {
+            ['bg', 'flower', 'wrap'].forEach(id => {
+                document.getElementById('tab-'+id).classList.add('hidden');
+                document.getElementById('btn-'+id).classList.replace('text-pink-500', 'text-gray-400');
+                document.getElementById('btn-'+id).classList.remove('active-tab');
+            });
+            document.getElementById('tab-'+t).classList.remove('hidden');
+            document.getElementById('btn-'+t).classList.replace('text-gray-400', 'text-pink-500');
+            document.getElementById('btn-'+t).classList.add('active-tab');
+        }
+
+        function changeBg(c) { canvas.setBackgroundColor(c, canvas.renderAll.bind(canvas)); }
+        function resizeCanvas() {
+            const s = document.getElementById('size').value;
+            const sizes = { "9:16": [280, 500], "4:3": [400, 300], "16:9": [480, 270], "10:7": [350, 245] };
+            canvas.setDimensions({ width: sizes[s][0], height: sizes[s][1] });
+        }
+
+        function download() {
+            const link = document.createElement('a');
+            link.download = 'bouquet-design.png';
+            link.href = canvas.toDataURL({ multiplier: 2 });
+            link.click();
+        }
+    </script>
+</body>
+</html>
